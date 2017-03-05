@@ -10,7 +10,8 @@ define upperLeft2	$300
 define upperLeft3	$400
 define upperLeft4	$500
 
-ldx #$ff ; Prepare X for first iteration
+; Program begin
+	ldx #$ff ; Prepare X for first iteration
 
 main:
 	lda #0
