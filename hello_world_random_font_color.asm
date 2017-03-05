@@ -63,7 +63,7 @@ define randomNumber $fe
 	sta $232
 	sta $252
 	sta $272
-	;sta $292
+	sta $292
 
 ; W
 	jsr getRandomColor
