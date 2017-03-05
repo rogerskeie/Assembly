@@ -1,12 +1,13 @@
 ; Constants
 define KEY_W		$77
-define KEY_S		$73
 define KEY_A		$61
+define KEY_S		$73
 define KEY_D		$64
 
 ; Addresses
 define lastKeyPressed	$ff
 
+; Program begin
 main:
 	lda #0
 	sta lastKeyPressed
@@ -15,10 +16,10 @@ mainLoop:
 	lda lastKeyPressed
 	cmp #KEY_W
 	beq up
-	cmp #KEY_S
-	beq down
 	cmp #KEY_A
 	beq left
+	cmp #KEY_S
+	beq down
 	cmp #KEY_D
 	beq right
 	jmp mainLoop
