@@ -1,4 +1,4 @@
-; Hello world random color pixel draw for Mos 6502 :)
+; Hello world random font color pixel draw for Mos 6502 :)
 
 define randomNumber $fe
 
