@@ -139,7 +139,8 @@ getRandomColor:
 
 tryNextRandom:
 	lda randomNumber
-	and #$0f
+; ANDing out the most significant bits so we can compare the rest with 0
+	and #$0f 
 	cmp #0
 	beq tryNextRandom
 	rts
