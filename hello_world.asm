@@ -1,6 +1,10 @@
 ; Hello world pixel draw for Mos 6502 :)
-; 1 is the color white, which will be stored to the screen pixel addresses
-	lda #1
+
+; Constants
+define COLOR_WHITE	$01
+
+; Program begin
+	lda #COLOR_WHITE
 
 ; H
 	sta $200

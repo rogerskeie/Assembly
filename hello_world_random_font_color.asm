@@ -1,6 +1,13 @@
 ; Hello world random font color pixel draw for Mos 6502 :)
 
-define randomNumber $fe
+; Constants
+define COLOR_BLACK	$00
+define COLOR_DARK_GREY	$0b
+
+; Addresses
+define randomNumber	$fe
+
+; Program begin
 
 ; H
 	jsr getRandomColor
@@ -141,9 +148,11 @@ getRandomColor:
 
 tryNextRandom:
 	lda randomNumber
-; ANDing out the most significant bits so we can compare the rest with 0
+; ANDing out the most significant bits so we can compare the rest to 0 and $0b
 	and #$0f 
-	cmp #0
+	cmp #COLOR_BLACK
+	beq tryNextRandom
+	cmp #COLOR_DARK_GREY
 	beq tryNextRandom
 	rts
 	
