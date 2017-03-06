@@ -134,6 +134,8 @@ define randomNumber $fe
 	sta $2f4
 	sta $314
 	sta $334
+	
+	jmp exit
 
 getRandomColor:
 
@@ -145,3 +147,4 @@ tryNextRandom:
 	beq tryNextRandom
 	rts
 	
+exit:			; End of program
