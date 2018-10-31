@@ -11,9 +11,7 @@ define upperLeft3	$400
 define upperLeft4	$500
 
 ; Program begin
-	ldx #$ff ; Prepare X for first iteration
-
-main:
+Main:
 	lda #0
 	sta lastKeyPressed
 
@@ -26,7 +24,6 @@ mainLoop:
 	jmp mainLoop
 
 drawRandom:
-	inx
 	lda randomNumber
 	sta upperLeft1,X
 	lda randomNumber
@@ -35,16 +32,17 @@ drawRandom:
 	sta upperLeft3,X
 	lda randomNumber
 	sta upperLeft4,X
-	cpx #$ff
+	inx
+	cpx #0
 	bne drawRandom
-	jmp main
+	jmp Main
 
 drawBlank:
-	inx
 	sta upperLeft1,X
 	sta upperLeft2,X
 	sta upperLeft3,X
 	sta upperLeft4,X
-	cpx #$ff
+	inx
+	cpx #0
 	bne drawBlank
-	jmp main
+	jmp Main
