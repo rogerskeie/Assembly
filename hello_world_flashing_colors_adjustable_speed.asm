@@ -13,57 +13,24 @@ define randomNumber	$fe
 define lastKeyPressed	$ff
 
 ; Initialize
-	lda #08
+	lda #$2f
 	sta idleMultiplier
 
 ; Program begin
 Main:
-	lda lastKeyPressed
-	cmp #KEY_W
-	beq increaseSpeed
-	cmp #KEY_S
-	beq decreaseSpeed
-	
-checkIdle:
-	ldy idleMultiplier
-	cpy #0
-	beq skipIdle
 	ldx #0
 	
-idle:
-	ldy #0
-	
 idleLoop:
-	iny
-	cpy #20
-	bne idleLoop
-	inx
+	jsr CheckInput
 	cpx idleMultiplier
-	bcs skipIdle
-	jmp idle
-	
-decreaseSpeed:
-	ldy idleMultiplier
-	cpy #$fe
-	beq afterSpeedChange
-	iny
-	jmp afterSpeedChange
-	
-increaseSpeed:
-	ldy idleMultiplier
-	cpy #$00
-	beq afterSpeedChange
-	dey
-	
-afterSpeedChange:
-	sty idleMultiplier
-	lda #0
-	sta lastKeyPressed
-	jmp checkIdle
+	beq skipIdle
+	inx
+	jmp idleLoop
 	
 skipIdle:
 	jsr Draw
 	jmp Main
+; Main
 	
 Draw:
 ; H
@@ -200,6 +167,7 @@ Draw:
 	sta $334
 	
 	rts
+; Draw
 	
 GetRandomColor:
 
@@ -211,4 +179,34 @@ tryNextRandom:
 	beq tryNextRandom
 	cmp #COLOR_DARK_GREY
 	beq tryNextRandom
+
 	rts
+; GetRandomColor
+
+CheckInput:
+	lda lastKeyPressed
+	cmp #KEY_W
+	beq increaseSpeed
+	cmp #KEY_S
+	beq decreaseSpeed
+	rts
+
+increaseSpeed:
+	ldy idleMultiplier
+	beq afterSpeedChange
+	dey
+	jmp afterSpeedChange
+
+decreaseSpeed:
+	ldy idleMultiplier
+	cpy #$ff
+	beq afterSpeedChange
+	iny
+	
+afterSpeedChange:
+	sty idleMultiplier
+	lda #0
+	sta lastKeyPressed
+
+	rts
+; CheckInput
