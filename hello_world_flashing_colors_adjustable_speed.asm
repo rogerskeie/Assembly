@@ -2,7 +2,6 @@
 ; Increase speed with W and decrease it with S
 
 ; Constants
-define COLOR_BLACK	$00
 define COLOR_DARK_GREY	$0b
 define KEY_W		$77
 define KEY_S		$73
@@ -14,17 +13,17 @@ define lastKeyPressed	$ff
 
 ; Initialize
 	lda #$2f
-	sta idleMultiplier
+	sta idleMultiplier      ; Set starting speed
 
 ; Program begin
 Main:
-	ldx #0
+	ldx #0			; Initialize idle loop counter
 	
 idleLoop:
 	jsr CheckInput
-	cpx idleMultiplier
-	beq skipIdle
-	inx
+	cpx idleMultiplier	; Check if done looping
+	beq skipIdle		; If so, exit idleLoop
+	inx			; Increment loop counter
 	jmp idleLoop
 	
 skipIdle:
@@ -173,12 +172,12 @@ GetRandomColor:
 
 tryNextRandom:
 	lda randomNumber
-; ANDing out the most significant bits so we can compare the rest to 0 and $0b
-	and #$0f 
-	cmp #COLOR_BLACK
-	beq tryNextRandom
+	and #$0f		; ANDing out the most significant bits
+				; to get a number between $00 and $0F.
+	beq tryNextRandom       ; if the zero flag is set after logical AND,
+				; the last color was black so try again.
 	cmp #COLOR_DARK_GREY
-	beq tryNextRandom
+	beq tryNextRandom	; Also avoid dark grey font color.
 
 	rts
 ; GetRandomColor
@@ -186,27 +185,26 @@ tryNextRandom:
 CheckInput:
 	lda lastKeyPressed
 	cmp #KEY_W
-	beq increaseSpeed
+	beq increaseSpeed	; Increase speed if W was pressed.
 	cmp #KEY_S
-	beq decreaseSpeed
+	beq decreaseSpeed	; Decrease speed if S was pressed.
 	rts
 
 increaseSpeed:
 	ldy idleMultiplier
-	beq afterSpeedChange
-	dey
+	beq afterSpeedChange	; Skip change if idleMultiplier is already 0.
+	dec idleMultiplier
 	jmp afterSpeedChange
 
 decreaseSpeed:
 	ldy idleMultiplier
 	cpy #$ff
-	beq afterSpeedChange
-	iny
+	beq afterSpeedChange	; Skip change if idleMultiplier is already $ff.
+	inc idleMultiplier
 	
 afterSpeedChange:
-	sty idleMultiplier
 	lda #0
-	sta lastKeyPressed
+	sta lastKeyPressed	; Clear last pressed key.
 
 	rts
 ; CheckInput
